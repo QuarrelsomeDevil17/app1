@@ -1,9 +1,10 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: unused_import
 
 import 'package:app1/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'dart:developer' as devtools show log;
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -49,7 +50,9 @@ class _LoginViewState extends State<LoginView> {
           TextField(
             controller: _password,
             decoration: const InputDecoration(
-                labelText: 'Password', hintText: 'Enter your password'),
+              labelText: 'Password',
+              hintText: 'Enter your password',
+            ),
             autocorrect: false,
             enableSuggestions: false,
             obscureText: true,
@@ -59,18 +62,22 @@ class _LoginViewState extends State<LoginView> {
                 final email = _email.text;
                 final password = _password.text;
                 try {
-                  final userCredential = await FirebaseAuth.instance
-                      .signInWithEmailAndPassword(
-                          email: email, password: password);
-                  print(userCredential);
+                  await FirebaseAuth.instance.signInWithEmailAndPassword(
+                    email: email,
+                    password: password,
+                  );
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/notes/',
+                    (route) => false,
+                  );
                 } on FirebaseAuthException catch (e) {
-                  print('Failed with error $e');
+                  devtools.log(e.toString());
                   if (e.code == 'user-not-found' ||
                       e.code == 'The email address is badly formatted') {
-                    print('No user found for that email.');
+                    devtools.log('No user found for that email.');
                   } else if (e.code == 'wrong-password') {
-                    print('Wrong password provided for that user.');
-                    print(e.code);
+                    devtools.log('Wrong password provided for that user.');
+                    devtools.log(e.code);
                   }
                 }
               },
