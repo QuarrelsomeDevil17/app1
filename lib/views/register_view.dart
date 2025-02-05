@@ -1,5 +1,6 @@
 // ignore_for_file: unused_import
 
+import 'package:app1/constants/routes.dart';
 import 'package:app1/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'dart:developer' as devtools show log;
 
 class RegisterView extends StatefulWidget {
-  const RegisterView({Key? key}) : super(key: key);
+  const RegisterView({super.key});
 
   @override
   State<RegisterView> createState() => _RegisterViewState();
@@ -81,7 +82,7 @@ class _RegisterViewState extends State<RegisterView> {
             TextButton(
               onPressed: () {
                 Navigator.of(context)
-                    .pushNamedAndRemoveUntil('/login/', (route) => true);
+                    .pushNamedAndRemoveUntil(loginRoute, (route) => true);
               },
               child: const Text('Already Registered. Login Here !'),
             )
