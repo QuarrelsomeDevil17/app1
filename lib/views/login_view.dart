@@ -2,6 +2,7 @@
 
 import 'package:app1/constants/routes.dart';
 import 'package:app1/firebase_options.dart';
+import 'package:app1/utilities/show_error_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -72,14 +73,29 @@ class _LoginViewState extends State<LoginView> {
                     (route) => false,
                   );
                 } on FirebaseAuthException catch (e) {
-                  devtools.log(e.toString());
+                  devtools.log(e.code);
                   if (e.code == 'user-not-found' ||
-                      e.code == 'The email address is badly formatted') {
-                    devtools.log('No user found for that email.');
+                      e.code == 'invalid-credential') {
+                    await showErrorDialog(
+                      context,
+                      'No user found for that email.',
+                    );
                   } else if (e.code == 'wrong-password') {
-                    devtools.log('Wrong password provided for that user.');
-                    devtools.log(e.code);
+                    await showErrorDialog(
+                      context,
+                      'wrong password.',
+                    );
+                  } else {
+                    await showErrorDialog(
+                      context,
+                      'Error: ${e.code}',
+                    );
                   }
+                } catch (e) {
+                  await showErrorDialog(
+                    context,
+                    e.toString()
+                  );
                 }
               },
               child: const Text('Login')),
@@ -97,3 +113,5 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 }
+
+
