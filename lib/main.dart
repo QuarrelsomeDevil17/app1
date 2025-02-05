@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:app1/constants/routes.dart';
 import 'package:app1/views/login_view.dart';
 import 'package:app1/views/register_view.dart';
@@ -26,6 +24,7 @@ void main() {
           loginRoute: (context) => const LoginView(),
           registerRoute: (context) => const RegisterView(),
           notesRoute: (context) => const NotesView(),
+          verifyEmailRoute: (context) => const VerifyEmailView(),
         }),
   );
 }
